@@ -1,4 +1,4 @@
-(load "listLib.lsp")
+(load "libs/listLib.lsp")
 ; no ha d'haver-hi elements repetits
 (defun conjunt-correcte (llista) 
   (cond 
@@ -66,3 +66,4 @@
     (t (cons (list e (car l)) (crea-lista e (cdr l))))
   )
 )
+
