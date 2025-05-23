@@ -41,22 +41,14 @@
   )
 )
 
-; donades dues llistes de la mateixa longitud intercalo la primera amb la segona al revés
-(defun intercala (l1 l2))
-
-; retorn t si una l1 és una permutació de l2
-(defun permutacio (l1 l2))
-;usant funcions auxiliars
-(defun comprimir (llista)) 
-
 ; retorna tots els valors menors que n de la llista 
 (defun menors (n llista) 
   (cond 
     ((null llista) nil)
     ((< (car llista) n)
-     (cons (car llista) (menors n (cdr llista))))
-     (t (menors n (cdr llista)))
-    
+     (cons (car llista) (menors n (cdr llista)))
+    )
+    (t (menors n (cdr llista)))
   )
 )
 ; retorna t si els dos darrers arguments són menors que el primer
@@ -68,13 +60,11 @@
 
 
 ; retorna una nova lista amb l(0) i l(l.length-1)
-(defun primeroUltimo (llista)
-(list (car llista) (last llista))
-
+(defun primeroUltimo (llista) 
+  (list (car llista) (last llista))
 )
 
-; retorna t si la llista comença amb un símbol i acaba amb un nombre
-(defun simnum (llista))
+
 
 ; es poden usar funcions d'ordre superior
 ; Calcula la transposta d'una matriu
@@ -88,27 +78,30 @@
 ; ?- (interseccio ‘(a b c d e) ‘(f g e a s))
 ; (a e)
 
-; Escriure una funció en LISP que donats dos conjunts d’elements
-; ens retorni el seu producte cartesià.
-; Pista: recordau que podeu utilitzar disseny descendent!
-; ?- (producte ‘(a b c) ‘(d e))
-; ((a d) (a e) (b d) (b e) (c d) (c e))
+(defun interseccio (l1 l2) 
+  (cond 
+    ((null l1) nil)
+    ((member (car l1) l2) (cons (car l1) (interseccio (cdr l1) l2)))
+    (t (interseccio (cdr l1) l2))
+  )
+)
+
+
 
 ; Escriure en LISP la funció partició que donat un número i una llista de números,
 ; ens torni dues llistes, una amb tots els valors de la llista inicial que siguin menors o iguals que
 ; l’element i una llista amb tots els valors que siguin majors que l’element
 
-; Escriure una funció profunditat en LISP que ens retorni el màxim nivell
-; n’anidament d’una llista (número màxim d’anidaments):
-; >(profunditat ‘(1 2 (4 5 (7)) 5)) ; el 7 està dins 3 llistes
-; 3
-; >(profunditat ‘(9 (3 1) (7 (5 ((6)))) 8)) ; el 6 dins 5
+(defun menor-major-llistes (n l1 menors majors) 
+  (cond 
+    ((null l1) (list menors majors))
+    ((< (car l1) n) (menor-major-llistes n (cdr l1) (cons (car l1) menors) majors))
+    ((> (car l1) n) (menor-major-llistes n (cdr l1) menors (cons (car l1) majors)))
+    (t (menor-major-llistes n (cdr l1) menors majors))
+  )
+)
 
 
-; Implementau la funció sumar en LISP, que suma tots els elements continguts dins una llista i les
-; seves subllistes. Tots els elements de darrer nivell son nombres:
-; > (sumar '(1 2 (3 4 (5)) ((6))))
-; 21
 
 
 ;  Implementau la funció longitudsiguals en LISP, que comprova si totes les llistes d’una llista tenen
@@ -120,21 +113,6 @@
 ; NIL
 
 
-; % Escriure una funció en LISP que donats dos conjunts d’elements
-; % ens retorni una llista amb els elements que pertanyen a la seva intersecció.
-; % ?- (interseccio ‘(a b c d e) ‘(f g e a s))
-; % (a e)
-
-
-;  Implementau la funció alterna en LISP que, donades dues llistes, a i b, construeix la llista c amb els
-; elements d’a i b intercalats:
-; > (alterna '(a b c) '(1 2 3))
-; (a 1 b 2 c 3)
-; > (alterna '(a b c d e) '(1 2 3))
-; (a 1 b 2 c 3 d e)
-; > (alterna '(a b c) '(1 2 3 4 5))
-; (a 1 b 2 c 3 4 5)
-; Es valorarà que funcioni si a i b no tenen la mateixa mida (exemples de la dreta)
 
 ; Implementau la funció filtra en LISP que, donada una funció f (ja sigui a través del seu símbol o com
 ; a funció lambda) i una llista l, construeix una llista amb els elements d’l que satisfan la funció f. Notau que f accepta un sol
@@ -145,25 +123,6 @@
 ; (2 3 4)
 ; Hauríeu de fer servir una funció d’ordre superior. Si no vos surt, implementau dues funcions segons els exemples.
 
-; Implementau la funció primers en LISP que, donada una llista de nombres, L, avalua a la llista amb
-; els nombres de L que són primers. Suposau que s’ha definit (no l’heu de fer) la funció (esprimer n) que avalua a t si n és
-; primer.
-; > (primers '(5 6 7 8 127 128))
-; (5 7 127)
-
-; Implementau la funció coln en LISP que, donada una taula i un índex de columna n obté la columna
-; indicada per n.
-; > (coln '((1 2 3) (4 5 6) (7 8 9)) 2)
-; (2 5 8)
-; És recomanable que seguiu un disseny descendent: una funció per obtenir l’element a la posició n d’una llista
-
-
-; Escriure una funció en LISP que ens digui si una llista és una permutació d’una
-; altra.
-; Ex: &gt;(permutacio ‘(a 2 b 4) ‘(b 4 2 a))
-; t
-; &gt;(permutacio ‘(a 1 2 3) ‘(3 1 2 b))
-; nil
 
 ; Definir una funció LISP que comprimeixi una llista segons el següent esquema:
 
@@ -182,7 +141,96 @@
 ; (simnum '(a b c 23 d)) → NIL
 
 
+
 ; Escriure una funció en LISP que compti el número total d’àtoms que té
 ; una llista qualsevol.
 ; &gt;(atoms ‘(a (b c (d e) f g) h (i)))
 ; 9
+
+(defun atoms (llista) 
+  (cond 
+    ((null llista) 0)
+    ((atom (car llista))
+     (+ 
+       1
+       (atoms (cdr llista))
+     )
+    )
+    (t (+ (atoms (car llista)) (atoms (cdr llista))))
+  )
+)
+
+; Escriure una funció en LISP que ens digui si una llista és una permutació d’una
+; altra.
+; Ex: &gt;(permutacio ‘(a 2 b 4) ‘(b 4 2 a))
+; t
+; &gt;(permutacio ‘(a 1 2 3) ‘(3 1 2 b))
+; nil
+
+(defun permutacio (l1 l2) 
+  (cond 
+    ((and (null l1) (null l2)) t)
+    ((member (car l1) l2)
+
+     (permutacio (cdr l1) (remove (car l1) l2))
+    )
+    (t nil)
+  )
+)
+
+; Implementau la funció coln en LISP que, donada una taula i un índex de columna n obté la columna
+; indicada per n.
+; > (coln '((1 2 3) (4 5 6) (7 8 9)) 2)
+; (2 5 8)
+; És recomanable que seguiu un disseny descendent: una funció per obtenir l’element a la posició n d’una llista
+(defun coln (taula n) 
+  (cond 
+    ((> n (length (car taula))) nil)
+    ((null taula) nil)
+    (t (cons (nth (- n 1) (car taula)) (coln (cdr taula) n)))
+  )
+)
+
+;  Implementau la funció alterna en LISP que, donades dues llistes, a i b, construeix la llista c amb els
+; elements d’a i b intercalats:
+; > (alterna '(a b c) '(1 2 3))
+; (a 1 b 2 c 3)
+; > (alterna '(a b c d e) '(1 2 3))
+; (a 1 b 2 c 3 d e)
+; > (alterna '(a b c) '(1 2 3 4 5))
+; (a 1 b 2 c 3 4 5)
+; Es valorarà que funcioni si a i b no tenen la mateixa mida (exemples de la dreta)
+(defun alterna (l1 l2) 
+  (cond 
+    ((null l2) l1)
+    ((null l1) l2)
+    (t (append (list (car l1) (car l2)) (alterna (cdr l1) (cdr l2))))
+  )
+)
+
+
+; Escriure una funció profunditat en LISP que ens retorni el màxim nivell
+; d’anidament d’una llista (número màxim d’anidaments):
+; >(profunditat ‘(1 2 (4 5 (7)) 5)) ; el 7 està dins 3 llistes
+; 3
+; >(profunditat ‘(9 (3 1) (7 (5 ((6)))) 8)) ; el 6 dins 5
+
+(defun profunditat (llista) 
+  (cond 
+    ((null llista) 1)
+    ((atom llista) 0)
+    (t
+    (maxim (+ 1 (profunditat (car llista))) (profunditat(cdr llista)))
+    )
+    
+  )
+)
+(defun maxim (e1 e2)
+(cond
+((> e1 e2)
+ e1
+ )
+  (t e2)
+
+)
+)
