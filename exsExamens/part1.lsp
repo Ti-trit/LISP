@@ -66,9 +66,6 @@
 
 
 
-; es poden usar funcions d'ordre superior
-; Calcula la transposta d'una matriu
-(defun transposta (llista))
 
 
 
@@ -112,6 +109,16 @@
 ; > (longitudsiguals '((1 2) (3 4 0) (5 6)))
 ; NIL
 
+(defun longitudsiguals (llista) 
+  (cond 
+    ((null (cdr llista)) t)
+    (
+     (= (length (car llista)) (length (cadr llista)))
+     (longitudsiguals (cdr llista))
+    )
+    (t nil)
+  )
+)
 
 
 ; Implementau la funció filtra en LISP que, donada una funció f (ja sigui a través del seu símbol o com
@@ -121,6 +128,9 @@
 ; (2 4 6 8)
 ; > (filtra (lambda (x) (< x 5)) '(2 3 4 5 6))
 ; (2 3 4)
+(defun filtra (funcion llista) 
+  (mapcar (funcall 'funcio) llista)
+)
 ; Hauríeu de fer servir una funció d’ordre superior. Si no vos surt, implementau dues funcions segons els exemples.
 
 
@@ -220,17 +230,15 @@
     ((null llista) 1)
     ((atom llista) 0)
     (t
-    (maxim (+ 1 (profunditat (car llista))) (profunditat(cdr llista)))
+     (maxim (+ 1 (profunditat (car llista))) (profunditat (cdr llista)))
     )
-    
   )
 )
-(defun maxim (e1 e2)
-(cond
-((> e1 e2)
- e1
- )
-  (t e2)
-
-)
+(defun maxim (e1 e2) 
+  (cond 
+    ((> e1 e2)
+     e1
+    )
+    (t e2)
+  )
 )

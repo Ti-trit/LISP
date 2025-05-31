@@ -427,13 +427,48 @@
 )
 
 
-;(defun transposta (l) 
- ; (apply 'mapcar #'list l)
-;)
 
-(defun transposta (l) 
+; sense usar funcions d'ordre superior
+(defun transposta (l &optional (i 0)) 
   (cond 
-    ((null (car l)) nil)
-    (t (cons (mapcar 'car l) (transposta (mapcar 'cdr l))))
+    ((= i (length l)) nil)
+    (t (cons (agafar-n i l) (transposta l (+ i 1))))
+  )
+)
+
+(defun agafar-n (index l) 
+  (cond 
+    ((null l) nil)
+    (t (cons (nth index (car l)) (agafar-n index (cdr l))))
+  )
+)
+
+; usant funcions d'ordre superior
+
+(defun transpostaOS (llista)
+  (cond
+  ((null (car llista))nil)
+  (t (cons (mapcar 'car llista) (transpostaOS (mapcar 'cdr llista))))  
+  )
+
+)
+
+
+(defun transpostaNoRec (llista)
+(apply 'mapcar 'list llista )
+)
+
+(defun producte-escalar (llista)
+  (cond
+  ((null (car llista)) 0)
+  (t (+ (apply '* (mapcar 'car llista)) (producte-escalar (mapcar 'cdr llista)))
+)  
+  )
+)
+
+(defun producte-cartesia (l1 l2)
+  (cond
+  ((null l1) nil)
+  (t (append (mapcar (lambda (x) (list (car l1) x )) l2)  (producte-cartesia (cdr l1) l2)))
   )
 )
